@@ -1,0 +1,257 @@
+
+---
+const {
+  analytics = []
+} = Astro.props;
+
+/* =========================
+   CREATE LABELS
+========================= */
+
+const labels =
+  analytics.map(
+    (item) =>
+      `${item.month} ${item.year}`
+  );
+
+/* =========================
+   CREATE EXPENSE DATA
+========================= */
+
+const expenseData =
+  analytics.map(
+    (item) =>
+      Number(
+        item.expenses || 0
+      )
+  );
+---
+
+<div
+  class="rounded-[32px] border border-white/10 bg-white/[0.04] p-8"
+>
+
+  <!-- HEADER -->
+
+  <div
+    class="mb-8"
+  >
+
+    <h2
+      class="text-3xl font-black text-white"
+    >
+      Expense Analytics
+    </h2>
+
+    <p
+      class="mt-2 text-white/50"
+    >
+      Real-time business expense analytics
+    </p>
+
+  </div>
+
+  <!-- CHART -->
+
+  <div
+    class="h-[400px]"
+  >
+
+    <canvas
+      id="expenseChart"
+    ></canvas>
+
+  </div>
+
+</div>
+
+<script
+  type="module"
+  define:vars={{
+    labels,
+    expenseData
+  }}
+>
+
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Filler,
+  Tooltip,
+  Legend
+}
+from "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm";
+
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Filler,
+  Tooltip,
+  Legend
+);
+
+const canvas =
+  document.getElementById(
+    "expenseChart"
+  );
+
+if (canvas) {
+
+  new Chart(
+    canvas,
+    {
+
+      type: "line",
+
+      data: {
+
+        labels,
+
+        datasets: [{
+
+          label: "Expenses",
+
+          data: expenseData,
+
+          borderColor:
+            "#ef4444",
+
+          backgroundColor:
+            "rgba(239,68,68,0.15)",
+
+          fill: true,
+
+          tension: 0.4,
+
+          borderWidth: 3,
+
+          pointRadius: 5,
+
+          pointBackgroundColor:
+            "#ef4444"
+
+        }]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        animation: {
+
+          duration: 1500
+
+        },
+
+        plugins: {
+
+          legend: {
+
+            position: "top",
+
+            labels: {
+
+              color: "#ffffff",
+
+              font: {
+
+                size: 14,
+
+                weight: "bold"
+
+              }
+
+            }
+
+          },
+
+          tooltip: {
+
+            backgroundColor:
+              "#111827",
+
+            titleColor:
+              "#ffffff",
+
+            bodyColor:
+              "#d1d5db",
+
+            borderColor:
+              "#ef4444",
+
+            borderWidth: 1
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            ticks: {
+
+              color: "#9ca3af",
+
+              font: {
+
+                size: 13
+
+              }
+
+            },
+
+            grid: {
+
+              color:
+                "rgba(255,255,255,0.05)"
+
+            }
+
+          },
+
+          y: {
+
+            beginAtZero: true,
+
+            ticks: {
+
+              color: "#9ca3af",
+
+              font: {
+
+                size: 13
+
+              }
+
+            },
+
+            grid: {
+
+              color:
+                "rgba(255,255,255,0.05)"
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+</script>

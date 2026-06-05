@@ -1,0 +1,736 @@
+---
+export const prerender = false;
+
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import ChatSidebar from "../../components/assistant/ChatSidebar.astro";
+import ChatWindow from "../../components/assistant/ChatWindow.astro";
+import NewChatModal from "../../components/assistant/NewChatModal.astro";
+
+import "../../styles/assistant.css";
+import "../../styles/global.css";
+---
+<DashboardLayout
+  title="AI Marketing Assistant"
+  description="Generate AI-powered marketing ideas, content, campaigns and business insights using GrowthPilot Assistant."
+  image="/og-image.png"
+>
+   <NewChatModal />
+  <div
+    class="h-[calc(100vh-110px)] overflow-hidden rounded-3xl border border-white/10 bg-[#050816]"
+  >
+
+    <div class="flex h-full">
+
+      <!-- Sidebar -->
+
+      <ChatSidebar />
+
+      <!-- Chat Window -->
+
+      <ChatWindow />
+
+    </div>
+
+  </div>
+
+</DashboardLayout>
+
+<script>
+
+let currentChatId = null;
+
+let conversationList;
+let messagesContainer;
+let chatForm;
+let messageInput;
+let newChatBtn;
+
+/* =====================
+   LOAD CHATS
+===================== */
+
+async function loadChats() {
+
+  try {
+
+    const profile =
+      await fetch(
+        "/api/business/profile"
+      );
+
+    const profileData =
+      await profile.json();
+
+    if (!profileData.success)
+      return;
+
+    const business =
+      profileData.user;
+
+    const response =
+      await fetch(
+        `/api/ai/conversations?businessId=${business.id}`
+      );
+
+    const result =
+      await response.json();
+
+    if (!result.success)
+      return;
+
+    const chats =
+      result.chats || [];
+
+    conversationList.innerHTML =
+      "";
+
+   chats.forEach(
+  (chat) => {
+
+    const item =
+      document.createElement( 
+        "div"
+      );
+
+    item.className =
+      "mb-2";
+
+    item.innerHTML = `
+      <div
+        class="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 transition-all duration-300 hover:border-lime-400 hover:bg-white/10"
+      >
+
+        <button
+          class="open-chat flex min-w-0 flex-1 items-center gap-3 text-left"
+        >
+
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10"
+          >
+            💬
+          </div>
+
+          <div class="min-w-0 flex-1">
+
+            <div
+              class="truncate text-sm font-medium text-white"
+            >
+              ${chat.title || "Untitled Chat"}
+            </div>
+
+            <div
+              class="text-xs text-white/40"
+            >
+              AI Conversation
+            </div>
+
+          </div>
+
+        </button>
+
+        <button
+          class="delete-chat flex h-9 w-9 items-center justify-center rounded-xl text-white/40 transition hover:bg-red-500/10 hover:text-red-400"
+          title="Delete Chat"
+        >
+          🗑️ 
+        </button>
+
+      </div>
+    `;
+
+    const openChatBtn =
+      item.querySelector(
+        ".open-chat"
+      );
+
+    openChatBtn?.addEventListener(
+      "click",
+      () => {
+
+        currentChatId =
+          chat.id;
+
+        const title =
+          document.getElementById(
+            "chatTitle"
+          );
+
+        if (title) {
+
+          title.textContent =
+            chat.title;
+
+        }
+
+        loadMessages(
+          chat.id
+        );
+
+      }
+    );
+
+    const deleteBtn =
+  item.querySelector(
+    ".delete-chat"
+  );
+
+deleteBtn?.addEventListener(
+  "click",
+  async (e) => {
+
+    e.stopPropagation();
+
+    const confirmed =
+      confirm(
+        `Delete "${chat.title}" ?`
+      );
+
+    if (!confirmed)
+      return;
+
+    try {
+
+      const response =
+        await fetch(
+          `/api/ai/conversations?id=${chat.id}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+      const result =
+        await response.json();
+
+      console.log(
+        "DELETE RESULT:",
+        result
+      );
+
+      if (
+        result.success
+      ) {
+
+        if (
+          currentChatId ===
+          chat.id
+        ) {
+
+          currentChatId =
+            null;
+
+          messagesContainer.innerHTML =
+            "";
+
+          const title =
+            document.getElementById(
+              "chatTitle"
+            );
+
+          if (title) {
+
+            title.textContent =
+              "AI Assistant";
+
+          }
+
+        }
+
+        await loadChats();
+
+      } else {
+
+        alert(
+          result.message ||
+          "Delete failed"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "DELETE ERROR:",
+        error
+      );
+
+      alert(
+        "Failed to delete chat"
+      );
+
+    }
+
+  }
+);
+
+conversationList.appendChild(
+  item
+);
+  }
+);
+
+
+  } catch (error) {
+
+    console.error(
+      "LOAD CHATS ERROR:",
+      error
+    );
+
+  }
+
+}
+
+/* =====================
+   NEW CHAT
+===================== */
+
+async function createNewChat(
+  title = "New Chat"
+) {
+
+  try {
+
+    const profile =
+      await fetch(
+        "/api/business/profile"
+      );
+
+    const profileData =
+      await profile.json();
+
+    if (!profileData.success)
+      return;
+
+    const business =
+      profileData.user;
+
+    const response =
+      await fetch(
+        "/api/ai/conversations",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body:
+            JSON.stringify({
+              businessId:
+                business.id,
+              title,
+            }),
+        }
+      );
+
+    const result =
+      await response.json();
+
+    if (!result.success)
+      return;
+
+    currentChatId =
+      result.chat.id;
+
+    messagesContainer.innerHTML =
+      "";
+
+    document.getElementById(
+      "chatTitle"
+    ).textContent =
+      result.chat.title;
+
+    await loadChats();
+
+  } catch (error) {
+
+    console.error(
+      "NEW CHAT ERROR:",
+      error
+    );
+
+  }
+
+}
+
+/* =====================
+   LOAD MESSAGES
+===================== */
+
+async function loadMessages(
+  chatId
+) {
+
+  try {
+
+    const response =
+      await fetch(
+        `/api/ai/messages?chatId=${chatId}`
+      );
+
+    const result =
+      await response.json();
+
+    if (!result.success)
+      return;
+
+    messagesContainer.innerHTML =
+      "";
+
+    result.messages.forEach(
+      (message) => {
+
+        addMessage(
+          message.role,
+          message.content
+        );
+
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      "LOAD MESSAGES ERROR:",
+      error
+    );
+
+  }
+
+}
+
+/* =====================
+   SEND MESSAGE
+===================== */
+
+async function sendMessage(
+  e
+) {
+
+  e.preventDefault();
+
+  if (!currentChatId) {
+
+    alert(
+      "Create a new chat first"
+    );
+
+    return;
+
+  }
+
+  const message =
+    messageInput.value.trim();
+
+  if (!message)
+    return;
+
+  addMessage(
+    "user",
+    message
+  );
+
+  messageInput.value =
+    "";
+
+  try {
+    showThinking();
+    
+    const response =
+      await fetch(
+        "/api/ai/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body:
+            JSON.stringify({
+              chatId:
+                currentChatId,
+              message,
+            }),
+        }
+      );
+
+    const result =
+      await response.json();
+      hideThinking();
+
+    if (!result.success) {
+
+      addMessage(
+        "assistant",
+        result.message ||
+        "Something went wrong."
+      );
+
+      return;
+
+    }
+
+    addMessage(
+      "assistant",
+      result.reply
+    );
+
+  } catch (error) {
+    hideThinking();
+    console.error(
+      "SEND MESSAGE ERROR:",
+      error
+    );
+
+    addMessage(
+      "assistant",
+      "Failed to connect to AI."
+    );
+
+  }
+
+}
+
+/* =====================
+   RENDER MESSAGE
+===================== */
+
+function addMessage(
+  role,
+  content
+) {
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+  wrapper.className =
+    role === "user"
+      ? "mb-4 flex justify-end"
+      : "mb-4 flex justify-start";
+
+  wrapper.innerHTML = `
+    <div class="${
+      role === "user"
+        ? "bg-lime-400 text-black"
+        : "bg-white/5 border border-white/10 text-white"
+    } max-w-[80%] rounded-3xl px-5 py-4">
+      ${content}
+    </div>
+  `;
+
+  messagesContainer.appendChild(
+    wrapper
+  );
+
+  messagesContainer.scrollTop =
+    messagesContainer.scrollHeight;
+
+}
+
+/* =====================
+   INIT
+===================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    conversationList =
+      document.getElementById(
+        "conversationList"
+      );
+
+    messagesContainer =
+      document.getElementById(
+        "messagesContainer"
+      );
+
+    chatForm =
+      document.getElementById(
+        "chatForm"
+      );
+
+    messageInput =
+      document.getElementById(
+        "messageInput"
+      );
+
+    newChatBtn =
+      document.getElementById(
+        "newChatBtn"
+      );
+
+    const modal =
+      document.getElementById(
+        "newChatModal"
+      );
+
+    const titleInput =
+      document.getElementById(
+        "chatTitleInput"
+      );
+
+    const createChatBtn =
+      document.getElementById(
+        "createChatBtn"
+      );
+
+    const cancelChatBtn =
+      document.getElementById(
+        "cancelChatBtn"
+      );
+
+    if (
+      !conversationList ||
+      !messagesContainer ||
+      !chatForm ||
+      !messageInput ||
+      !newChatBtn
+    ) {
+
+      console.error(
+        "Assistant elements not found"
+      );
+
+      return;
+
+    }
+
+    /* =====================
+       OPEN MODAL
+    ===================== */
+
+    newChatBtn.addEventListener(
+      "click",
+      () => {
+
+        modal?.classList.remove(
+          "hidden"
+        );
+
+        modal?.classList.add(
+          "flex"
+        );
+
+        titleInput.value = "";
+
+        titleInput?.focus();
+
+      }
+    );
+
+    /* =====================
+       CLOSE MODAL
+    ===================== */
+
+    cancelChatBtn?.addEventListener(
+      "click",
+      () => {
+
+        modal?.classList.add(
+          "hidden"
+        );
+
+        modal?.classList.remove(
+          "flex"
+        );
+
+      }
+    );
+
+    /* =====================
+       CREATE CHAT BUTTON
+    ===================== */
+
+    createChatBtn?.addEventListener(
+      "click",
+      async () => {
+
+        const title =
+          titleInput?.value.trim();
+
+        if (!title) {
+
+          alert(
+            "Please enter a chat title"
+          );
+
+          return;
+
+        }
+
+        await createNewChat(
+          title
+        );
+
+        titleInput.value = "";
+
+        modal?.classList.add(
+          "hidden"
+        );
+
+        modal?.classList.remove(
+          "flex"
+        );
+
+      }
+    );
+
+    /* =====================
+       ENTER KEY SUPPORT
+    ===================== */
+
+    titleInput?.addEventListener(
+      "keydown",
+      async (e) => {
+
+        if (
+          e.key !== "Enter"
+        )
+          return;
+
+        e.preventDefault();
+
+        const title =
+          titleInput.value.trim();
+
+        if (!title)
+          return;
+
+        await createNewChat(
+          title
+        );
+
+        titleInput.value = "";
+
+        modal?.classList.add(
+          "hidden"
+        );
+
+        modal?.classList.remove(
+          "flex"
+        );
+
+      }
+    );
+
+    /* =====================
+       SEND MESSAGE
+    ===================== */
+
+    chatForm.addEventListener(
+      "submit",
+      sendMessage
+    );
+
+    /* =====================
+       LOAD CHATS
+    ===================== */
+
+    loadChats();
+
+  }
+);
+
+</script>

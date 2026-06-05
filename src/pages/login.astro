@@ -1,0 +1,319 @@
+
+---
+import "../styles/global.css";
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Login | GrowthPilot</title>
+</head>
+
+<body class="min-h-screen bg-[#050816] text-white overflow-x-hidden">
+
+  <!-- Background -->
+
+  <div class="fixed inset-0 -z-10">
+    <div
+      class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-lime-400/20 blur-[180px]"
+    ></div>
+
+    <div
+      class="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-cyan-500/20 blur-[180px]"
+    ></div>
+
+    <div
+      class="absolute bottom-0 left-1/2 h-[400px] w-[400px] rounded-full bg-purple-500/20 blur-[180px]"
+    ></div>
+  </div>
+
+  <main
+    class="mx-auto grid min-h-screen max-w-7xl lg:grid-cols-2"
+  >
+
+    <!-- Left Side -->
+
+    <section
+      class="hidden flex-col justify-center px-12 xl:px-20 lg:flex"
+    >
+
+      <span
+        class="mb-6 inline-flex w-fit rounded-full border border-lime-400/20 bg-lime-400/10 px-5 py-2 text-lime-400"
+      >
+        🚀 AI Marketing Platform
+      </span>
+
+      <h1
+        class="max-w-xl text-6xl font-black leading-tight"
+      >
+        Welcome Back To
+
+        <span
+          class="bg-gradient-to-r from-lime-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent"
+        >
+          GrowthPilot
+        </span>
+      </h1>
+
+      <p
+        class="mt-8 max-w-lg text-xl text-gray-400"
+      >
+        Manage campaigns, analytics and customers from one dashboard.
+      </p>
+
+    </section>
+
+    <!-- Login Card -->
+
+    <section
+      class="flex items-center justify-center p-6"
+    >
+
+      <div
+        class="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl shadow-2xl"
+      >
+
+        <div class="mb-8 text-center">
+
+          <div
+            class="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-lime-400 to-cyan-400 text-3xl font-black text-black"
+          >
+            G
+          </div>
+
+          <h2 class="text-4xl font-black">
+            Login
+          </h2>
+
+          <p class="mt-2 text-gray-400">
+            Access your dashboard
+          </p>
+
+        </div>
+
+        <form
+          id="loginForm"
+          class="space-y-5"
+        >
+
+          <input
+            id="email"
+            type="email"
+            placeholder="Email Address"
+            class="w-full rounded-2xl border border-white/10 bg-black/20 p-4"
+            required
+          />
+
+          <div class="relative">
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              class="w-full rounded-2xl border border-white/10 bg-black/20 p-4 pr-12"
+              required
+            />
+
+            <button
+              type="button"
+              id="togglePassword"
+              class="absolute right-4 top-1/2 -translate-y-1/2"
+            >
+              👁️
+            </button>
+
+          </div>
+
+          <button
+            id="loginBtn"
+            type="submit"
+            class="w-full rounded-2xl bg-lime-400 py-4 font-bold text-black"
+          >
+            Login
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+<script>
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const form =
+      document.getElementById(
+        "loginForm"
+      );
+
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
+
+    const togglePassword =
+      document.getElementById(
+        "togglePassword"
+      );
+
+    const loginBtn =
+      document.getElementById(
+        "loginBtn"
+      );
+
+    togglePassword.addEventListener(
+      "click",
+      () => {
+
+        if (
+          passwordInput.type ===
+          "password"
+        ) {
+
+          passwordInput.type =
+            "text";
+
+          togglePassword.textContent =
+            "🙈";
+
+        } else {
+
+          passwordInput.type =
+            "password";
+
+          togglePassword.textContent =
+            "👁️";
+        }
+      }
+    );
+
+    form.addEventListener(
+      "submit",
+      async (e) => {
+
+        e.preventDefault();
+
+        const email =
+          document
+            .getElementById(
+              "email"
+            )
+            .value.trim();
+
+        const password =
+          document
+            .getElementById(
+              "password"
+            )
+            .value;
+
+        loginBtn.disabled =
+          true;
+
+        loginBtn.textContent =
+          "Logging In...";
+
+        try {
+
+          const response =
+            await fetch(
+              "/api/auth/login",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json",
+                },
+                body:
+                  JSON.stringify({
+                    email,
+                    password,
+                  }),
+              }
+            );
+
+          const result =
+            await response.json();
+
+          console.log(
+            "LOGIN RESULT:",
+            result
+          );
+
+          if (
+            !result.success
+          ) {
+
+            alert(
+              result.message
+            );
+
+            loginBtn.disabled =
+              false;
+
+            loginBtn.textContent =
+              "Login";
+
+            return;
+          }
+
+       
+alert(
+  "Login Successful 🎉"
+);
+
+/* SAVE LOGIN DATA */
+
+
+
+localStorage.setItem(
+  "business_email",
+  result.user.email
+);
+
+
+localStorage.setItem(
+  "is_logged_in",
+  "true"
+);
+
+/* REDIRECT */
+
+window.location.href =
+  "/dashboard";
+
+
+
+        } catch (error) {
+
+          console.error(
+            "LOGIN ERROR:",
+            error
+          );
+
+          alert(
+            "Login Failed"
+          );
+
+          loginBtn.disabled =
+            false;
+
+          loginBtn.textContent =
+            "Login";
+        }
+      }
+    );
+  }
+);
+</script>
+</body>
+</html>
+:::
+

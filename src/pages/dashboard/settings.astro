@@ -1,0 +1,818 @@
+
+---
+
+
+import DashboardLayout
+from "../layouts/DashboardLayout.astro";
+
+import "../../styles/global.css";
+---
+
+<DashboardLayout
+  title="Business Settings"
+  description="Manage your business profile, logo, analytics settings and GrowthPilot account preferences."
+  image="/og-image.png"
+  noindex={true}
+>
+
+<section
+  class="mx-auto max-w-7xl px-6 py-10"
+>
+
+  <!-- HEADER -->
+
+  <div class="mb-12">
+
+    <h1
+      class="text-5xl font-black text-white"
+    >
+      Business Settings
+    </h1>
+
+    <p
+      class="mt-3 text-lg text-white/60"
+    >
+      Manage your business profile and analytics.
+    </p>
+
+  </div>
+
+  <!-- GRID -->
+
+  <div
+    class="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]"
+  >
+
+    <!-- =====================================
+         PROFILE
+    ====================================== -->
+
+    <form
+      id="profileForm"
+      class="rounded-[36px] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl"
+    >
+
+      <!-- TOP -->
+
+      <div
+        class="mb-10 flex items-center gap-5"
+      >
+
+        <div
+          class="h-24 w-24 overflow-hidden rounded-3xl border border-white/10 bg-[#0B1220]"
+        >
+
+          <img
+            id="logoPreview"
+            src="https://placehold.co/200x200?text=Logo"
+            alt="Logo"
+            class="h-full w-full object-cover"
+          />
+
+        </div>
+
+        <div>
+
+          <h2
+            class="text-3xl font-black text-white"
+          >
+            Edit Profile
+          </h2>
+
+          <p
+            class="mt-2 text-white/50"
+          >
+            Update business details.
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- INPUTS -->
+
+      <div
+        class="grid gap-6"
+      >
+
+        <input
+          id="business_name"
+          type="text"
+          placeholder="Business Name"
+          class="w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <input
+          id="owner_name"
+          type="text"
+          placeholder="Owner Name"
+          class="w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <input
+          id="email"
+          type="email"
+          placeholder="Email"
+          class="w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <input
+          id="phone"
+          type="text"
+          placeholder="Phone"
+          class="w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <textarea
+          id="address"
+          rows="4"
+          placeholder="Address"
+          class="w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        ></textarea>
+
+        <input
+          id="logo"
+          type="text"
+          placeholder="Logo URL"
+          class="w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+      </div>
+
+      <!-- SAVE -->
+
+      <button
+        type="submit"
+        class="mt-8 w-full rounded-2xl bg-lime-400 px-8 py-5 text-lg font-bold text-black"
+      >
+        Save Profile
+      </button>
+
+    </form>
+
+    <!-- =====================================
+         ANALYTICS
+    ====================================== -->
+
+    <form
+      id="analyticsForm"
+      class="rounded-[36px] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl"
+    >
+
+      <div class="mb-10">
+
+        <h2
+          class="text-3xl font-black text-white"
+        >
+          Business Analytics
+        </h2>
+
+        <p
+          class="mt-2 text-white/50"
+        >
+          Manage performance metrics.
+        </p>
+
+      </div>
+
+      <!-- STATS -->
+
+      <div
+        class="mb-8 grid gap-4 sm:grid-cols-2"
+      >
+
+        <div
+          class="rounded-2xl border border-lime-400/20 bg-lime-400/10 p-5"
+        >
+
+          <p class="text-white/50">
+            Revenue
+          </p>
+
+          <h3
+            id="revenuePreview"
+            class="mt-2 text-3xl font-black text-lime-400"
+          >
+            ₹0
+          </h3>
+
+        </div>
+
+        <div
+          class="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-5"
+        >
+
+          <p class="text-white/50">
+            Sales
+          </p>
+
+          <h3
+            id="salesPreview"
+            class="mt-2 text-3xl font-black text-cyan-400"
+          >
+            0
+          </h3>
+
+        </div>
+
+      </div>
+
+      <!-- MONTH -->
+
+      <select
+        id="month"
+        class="mb-6 w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+      ></select>
+
+      <!-- YEAR -->
+
+      <select
+        id="year"
+        class="mb-6 w-full rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+      ></select>
+
+      <!-- INPUTS -->
+
+      <div
+        class="grid gap-6"
+      >
+
+        <input
+          id="revenue"
+          type="number"
+          placeholder="Revenue"
+          class="rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <input
+          id="sales"
+          type="number"
+          placeholder="Sales"
+          class="rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <input
+          id="expenses"
+          type="number"
+          placeholder="Expenses"
+          class="rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+        <input
+          id="customers"
+          type="number"
+          placeholder="Customers"
+          class="rounded-2xl border border-white/10 bg-[#0B1220] px-5 py-4 text-white"
+        />
+
+      </div>
+
+      <button
+        type="submit"
+        class="mt-8 w-full rounded-2xl bg-cyan-400 px-8 py-5 text-lg font-bold text-black"
+      >
+        Save Analytics
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+<script type="module">
+
+import { supabase }
+from "/src/lib/supabase.ts";
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+setTimeout(async () => {
+/* ===================================
+   WAIT FOR LOCAL STORAGE
+=================================== */
+
+
+const businessEmail =
+  localStorage
+    .getItem(
+      "business_email"
+    )
+    ?.trim();
+
+console.log(
+  "BUSINESS EMAIL:",
+  businessEmail
+);
+
+/* ===================================
+   CHECK LOGIN
+=================================== */
+
+if (
+  !businessEmail ||
+  businessEmail === "undefined" ||
+  businessEmail === "null"
+) {
+
+  console.log(
+    "NO LOGIN FOUND"
+  );
+
+  window.location.href =
+    "/login";
+
+  return;
+
+}
+
+
+
+
+
+    /* ===================================
+       ELEMENTS
+    =================================== */
+
+    const businessName =
+      document.getElementById(
+        "business_name"
+      );
+
+    const ownerName =
+      document.getElementById(
+        "owner_name"
+      );
+
+    const email =
+      document.getElementById(
+        "email"
+      );
+
+    const phone =
+      document.getElementById(
+        "phone"
+      );
+
+    const address =
+      document.getElementById(
+        "address"
+      );
+
+    const logo =
+      document.getElementById(
+        "logo"
+      );
+
+    const logoPreview =
+      document.getElementById(
+        "logoPreview"
+      );
+
+
+/* ===================================
+   MONTH SELECT
+=================================== */
+
+const monthSelect =
+  document.getElementById(
+    "month"
+  );
+
+const months = [
+
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+
+];
+
+const currentMonth =
+  new Date().getMonth();
+
+months.forEach(
+  (month, index) => {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value =
+      month;
+
+    option.textContent =
+      month;
+
+    /* AUTO SELECT CURRENT MONTH */
+
+    if (
+      index === currentMonth
+    ) {
+
+      option.selected = true;
+
+    }
+
+    monthSelect.appendChild(
+      option
+    );
+
+  }
+);
+
+
+
+/* ===================================
+   YEAR SELECT
+=================================== */
+
+const yearSelect =
+  document.getElementById(
+    "year"
+  );
+
+const currentYear =
+  new Date().getFullYear();
+
+for (
+  let i = 0;
+  i < 5;
+  i++
+) {
+
+  const option =
+    document.createElement(
+      "option"
+    );
+
+  option.value =
+    currentYear + i;
+
+  option.textContent =
+    currentYear + i;
+
+  /* AUTO SELECT CURRENT YEAR */
+
+  if (i === 0) {
+
+    option.selected = true;
+
+  }
+
+  yearSelect.appendChild(
+    option
+  );
+
+}
+
+
+
+    /* ===================================
+       FETCH CURRENT BUSINESS
+    =================================== */
+
+    async function loadBusiness() {
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("business")
+        .select("*")
+         
+.eq(
+  "email",
+  localStorage.getItem(
+    "business_email"
+  )
+)
+
+        .single();
+
+      if (error) {
+
+        console.error(error);
+
+        return;
+
+      }
+
+      console.log(
+        "CURRENT BUSINESS:",
+        data
+      );
+
+      /* ===================================
+         SHOW CURRENT VALUES
+      =================================== */
+
+      businessName.value =
+        data.business_name || "";
+
+      ownerName.value =
+        data.owner_name || "";
+
+      email.value =
+        data.email || "";
+
+      phone.value =
+        data.phone || "";
+
+      address.value =
+        data.address || "";
+
+      logo.value =
+        data.logo_url || "";
+
+      logoPreview.src =
+        data.logo_url ||
+        "https://placehold.co/200x200?text=Logo";
+
+    }
+
+    await loadBusiness();
+
+    /* ===================================
+       LOGO PREVIEW
+    =================================== */
+
+    logo.addEventListener(
+      "input",
+      () => {
+
+        logoPreview.src =
+          logo.value ||
+          "https://placehold.co/200x200?text=Logo";
+
+      }
+    );
+
+    /* ===================================
+       SAVE PROFILE
+    =================================== */
+
+    document
+      .getElementById(
+        "profileForm"
+      )
+      .addEventListener(
+        "submit",
+        async (e) => {
+
+          e.preventDefault();
+
+          const payload = {
+
+            business_name:
+              businessName.value,
+
+            owner_name:
+              ownerName.value,
+
+            email:
+              email.value,
+
+            phone:
+              phone.value,
+
+            address:
+              address.value,
+
+            logo_url:
+              logo.value,
+
+          };
+
+          const {
+            error
+          } = await supabase
+
+                .from("business")
+                .update(payload)
+                .eq(
+  "email",
+  localStorage.getItem(
+    "business_email"
+  )
+);
+
+
+          if (error) {
+
+            console.error(error);
+
+            alert(
+              error.message
+            );
+
+            return;
+
+          }
+
+localStorage.setItem(
+  "business_email",
+  email.value
+);
+
+alert(
+  "Profile Updated Successfully"
+);
+
+
+          await loadBusiness();
+
+        }
+      );
+
+
+/* ===================================
+   SAVE ANALYTICS
+=================================== */
+
+document
+  .getElementById(
+    "analyticsForm"
+  )
+  .addEventListener(
+    "submit",
+    async (e) => {
+
+      e.preventDefault();
+
+      /* =========================
+         BUTTON LOADING
+      ========================= */
+
+      const submitBtn =
+        e.target.querySelector(
+          "button[type='submit']"
+        );
+
+      submitBtn.disabled =
+        true;
+
+      submitBtn.textContent =
+        "Saving...";
+
+      /* =========================
+         CREATE PAYLOAD
+      ========================= */
+
+      const payload = {
+
+        business_name:
+          businessName.value,
+
+        email:
+          email.value,
+
+        month:
+          monthSelect.value,
+
+        year:
+          Number(
+            yearSelect.value
+          ),
+
+        revenue:
+          Number(
+            document.getElementById(
+              "revenue"
+            ).value
+          ),
+
+        sales:
+          Number(
+            document.getElementById(
+              "sales"
+            ).value
+          ),
+
+        expenses:
+          Number(
+            document.getElementById(
+              "expenses"
+            ).value
+          ),
+
+        customers:
+          Number(
+            document.getElementById(
+              "customers"
+            ).value
+          ),
+
+      };
+
+      console.log(
+        "ANALYTICS PAYLOAD:",
+        payload
+      );
+
+      /* =========================
+         INSERT DATA
+      ========================= */
+
+      const {
+        error
+      } = await supabase
+        .from(
+          "business_analytics"
+        )
+        .insert([payload]);
+
+      /* =========================
+         ERROR
+      ========================= */
+
+      if (error) {
+
+        console.error(error);
+
+        alert(
+          error.message
+        );
+
+        submitBtn.disabled =
+          false;
+
+        submitBtn.textContent =
+          "Save Analytics";
+
+        return;
+
+      }
+
+      /* =========================
+         UPDATE PREVIEW
+      ========================= */
+
+      document.getElementById(
+        "revenuePreview"
+      ).textContent =
+        `₹${payload.revenue}`;
+
+      document.getElementById(
+        "salesPreview"
+      ).textContent =
+        payload.sales;
+
+      /* =========================
+         SUCCESS
+      ========================= */
+
+      alert(
+        "Analytics Saved Successfully 🎉"
+      );
+
+      /* =========================
+         CLEAR ONLY INPUTS
+      ========================= */
+
+      document.getElementById(
+        "revenue"
+      ).value = "";
+
+      document.getElementById(
+        "sales"
+      ).value = "";
+
+      document.getElementById(
+        "expenses"
+      ).value = "";
+
+      document.getElementById(
+        "customers"
+      ).value = "";
+
+      /* =========================
+         RESET BUTTON
+      ========================= */
+
+      submitBtn.disabled =
+        false;
+
+      submitBtn.textContent =
+        "Save Analytics";
+
+    }
+  );
+
+}, 800);
+
+});
+
+</script>
+

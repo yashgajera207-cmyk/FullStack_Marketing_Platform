@@ -1,0 +1,12 @@
+
+# GrowthPilot
+
+AI marketing dashboard platform.
+
+Pages:
+/dashboard
+/dashboard/analytics
+/dashboard/settings
+/dashboard/assistant
+/dashboard/news/news
+/dashboard/

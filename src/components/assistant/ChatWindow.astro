@@ -1,0 +1,239 @@
+---
+---
+
+<div
+  class="flex h-full flex-1 flex-col bg-[#050816]"
+>
+
+  <!-- Header -->
+
+  <div
+    class="border-b border-white/10 bg-[#050816]/80 px-8 py-5 backdrop-blur-xl"
+  >
+
+    <h2
+      id="chatTitle"
+      class="text-2xl font-semibold tracking-tight text-white"
+    >
+      New Chat
+    </h2>
+
+    <p
+      class="mt-1 text-sm text-white/50"
+    >
+      Claude-style intelligent assistant
+    </p>
+
+  </div>
+
+  <!-- Messages Area -->
+
+  <div
+    id="messagesContainer"
+    class="flex-1 overflow-y-auto"
+  >
+
+    <div
+      id="messagesWrapper"
+      class="mx-auto flex max-w-5xl flex-col gap-5 px-8 py-8"
+    >
+
+      <!-- Dynamic Messages -->
+
+      <!-- AI Thinking Animation -->
+
+      <div
+        id="thinkingContainer"
+        class="hidden animate-pulse"
+      >
+
+        <div
+          class="flex items-start gap-4"
+        >
+
+          <!-- AI Avatar -->
+
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-lime-400 font-bold text-black shadow-lg"
+          >
+            AI
+          </div>
+
+          <!-- Bubble -->
+
+          <div
+            class="rounded-3xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-lg"
+          >
+
+            <p
+              class="mb-3 text-sm text-white/60"
+            >
+              AI is thinking...
+            </p>
+
+            <div
+              class="flex gap-2"
+            >
+
+              <span
+                class="h-2 w-2 animate-bounce rounded-full bg-lime-400"
+              ></span>
+
+              <span
+                class="h-2 w-2 animate-bounce rounded-full bg-lime-400 [animation-delay:150ms]"
+              ></span>
+
+              <span
+                class="h-2 w-2 animate-bounce rounded-full bg-lime-400 [animation-delay:300ms]"
+              ></span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Input Area -->
+
+  <div
+    class="border-t border-white/10 bg-[#050816] p-6"
+  >
+
+    <div
+      class="mx-auto max-w-5xl"
+    >
+
+      <form
+        id="chatForm"
+        class="relative"
+      >
+
+        <textarea
+          id="messageInput"
+          rows="1"
+          placeholder="Message AI Assistant..."
+          class="w-full resize-none rounded-3xl border border-white/10 bg-white/5 px-6 py-5 pr-28 text-white outline-none transition-all duration-300 placeholder:text-white/40 focus:border-lime-400/50 focus:bg-white/[0.08]"
+        ></textarea>
+
+        <button
+          id="sendBtn"
+          type="submit"
+          class="absolute bottom-3 right-3 rounded-2xl bg-lime-400 px-6 py-2.5 font-semibold text-black shadow-lg transition-all duration-300 hover:scale-105 hover:bg-lime-300 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Send
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  const sendBtn =
+    document.getElementById(
+      "sendBtn"
+    );
+
+  const messageInput =
+    document.getElementById(
+      "messageInput"
+    );
+
+  const thinkingContainer =
+    document.getElementById(
+      "thinkingContainer"
+    );
+
+  const messagesContainer =
+    document.getElementById(
+      "messagesContainer"
+    );
+
+  window.showThinking =
+    function () {
+
+      if (
+        thinkingContainer
+      ) {
+
+        thinkingContainer.classList.remove(
+          "hidden"
+        );
+
+      }
+
+      if (sendBtn) {
+
+        sendBtn.disabled =
+          true;
+
+        sendBtn.textContent =
+          "Thinking...";
+
+      }
+
+      if (
+        messageInput
+      ) {
+
+        messageInput.disabled =
+          true;
+
+      }
+
+      if (
+        messagesContainer
+      ) {
+
+        messagesContainer.scrollTop =
+          messagesContainer.scrollHeight;
+
+      }
+
+    };
+
+  window.hideThinking =
+    function () {
+
+      if (
+        thinkingContainer
+      ) {
+
+        thinkingContainer.classList.add(
+          "hidden"
+        );
+
+      }
+
+      if (sendBtn) {
+
+        sendBtn.disabled =
+          false;
+
+        sendBtn.textContent =
+          "Send";
+
+      }
+
+      if (
+        messageInput
+      ) {
+
+        messageInput.disabled =
+          false;
+
+      }
+
+    };
+
+</script>

@@ -1,0 +1,289 @@
+---
+export const prerender = false;
+
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+
+import TeamGrid from "../../components/team/TeamGrid.astro";
+
+import TeamMemberModal from "../../components/team/TeamMemberModal.astro";
+
+
+
+import "../../styles/global.css";
+
+import {
+  getTeamMembers
+} from "../../services/team.service";
+
+const STRAPI_URL =
+  import.meta.env.PUBLIC_STRAPI_URL;
+
+const members =
+  await getTeamMembers();
+---
+
+<DashboardLayout
+  title="Business Advisor Team"
+  description="Manage your GrowthPilot business advisors, team members and collaboration dashboard."
+  image="/og-image.png"
+>
+
+  <section
+    class="px-8 py-10"
+  >
+
+    <div
+      class="mb-10"
+    >
+
+      <h1
+        class="text-4xl font-bold text-white"
+      >
+        Team Members
+      </h1>
+
+      <p
+        class="mt-2 text-white/50"
+      >
+        Connect with your organization team.
+      </p>
+
+    </div>
+
+
+
+    <TeamGrid
+      members={members}
+      strapiUrl={STRAPI_URL}
+    />
+    <TeamMemberModal />
+  </section>
+
+</DashboardLayout>
+
+<script define:vars={{ STRAPI_URL }}>
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    const btn =
+      e.target.closest(
+        ".view-member-btn"
+      );
+
+    if (!btn) return;
+
+    let member;
+
+    try {
+
+      member =
+        JSON.parse(
+          btn.dataset.member
+        );
+
+    } catch (err) {
+
+      console.error(
+        "Invalid member data",
+        err
+      );
+
+      return;
+
+    }
+
+    const modal =
+      document.getElementById(
+        "memberModal"
+      );
+
+    const content =
+      document.getElementById(
+        "memberModalContent"
+      );
+
+    if (!modal || !content) {
+      console.error(
+        "Modal elements not found"
+      );
+      return;
+    }
+
+ content.innerHTML = `
+<div class="grid lg:grid-cols-2 overflow-hidden rounded-3xl">
+
+  <!-- Left Side Image -->
+
+  <div class="relative h-[500px]">
+
+    <img
+      src="${
+        member?.image?.url
+          ? (
+              member.image.url.startsWith("http")
+                ? member.image.url
+                : STRAPI_URL + member.image.url
+            )
+          : "https://placehold.co/800x1000?text=Team+Member"
+      }"
+      alt="${member?.name || "Team Member"}"
+      class="h-full w-full object-cover"
+    />
+
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
+    ></div>
+
+    <div
+      class="absolute bottom-8 left-8"
+    >
+      <h2
+        class="text-4xl font-bold text-white"
+      >
+        ${member?.name || ""}
+      </h2>
+
+      <p
+        class="mt-2 text-lg text-lime-400"
+      >
+        ${member?.designation || ""}
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Right Side Details -->
+
+  <div
+    class="flex flex-col justify-between bg-[#0D1117] p-8"
+  >
+
+    <div>
+
+      <div class="mb-6">
+        <span
+          class="rounded-full border border-lime-400/20 bg-lime-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-lime-400"
+        >
+          Team Member
+        </span>
+      </div>
+
+      <div class="space-y-4">
+
+        <div
+          class="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+        >
+          <p
+            class="mb-1 text-xs uppercase text-white/40"
+          >
+            Email
+          </p>
+
+          <p class="text-white">
+            ${member?.email || "Not Available"}
+          </p>
+        </div>
+
+        <div
+          class="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+        >
+          <p
+            class="mb-1 text-xs uppercase text-white/40"
+          >
+            Phone
+          </p>
+
+          <p class="text-white">
+            ${member?.phone || "Not Available"}
+          </p>
+        </div>
+
+        <div
+          class="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+        >
+          <p
+            class="mb-1 text-xs uppercase text-white/40"
+          >
+            Designation
+          </p>
+
+          <p class="text-white">
+            ${member?.designation || "Not Available"}
+          </p>
+        </div>
+
+      </div>
+
+      <div class="mt-8">
+
+        <h3
+          class="mb-3 text-lg font-semibold text-white"
+        >
+          About
+        </h3>
+
+        <p
+          class="max-h-[200px] overflow-y-auto pr-2 leading-relaxed text-white/60"
+        >
+          ${member?.description || "No description available."}
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+</div>
+`;
+
+    modal.classList.remove(
+      "hidden"
+    );
+
+    modal.classList.add(
+      "flex"
+    );
+
+  }
+);
+
+/* CLOSE MODAL */
+
+document.addEventListener(
+  "click",
+  (e) => {
+
+    const closeBtn =
+      e.target.closest(
+        "#closeMemberModal"
+      );
+
+    if (!closeBtn)
+      return;
+
+    const modal =
+      document.getElementById(
+        "memberModal"
+      );
+
+    if (modal) {
+
+      modal.classList.add(
+        "hidden"
+      );
+
+      modal.classList.remove(
+        "flex"
+      );
+
+    }
+
+  }
+);
+
+</script>

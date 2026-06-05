@@ -1,0 +1,145 @@
+---
+export const prerender = false;
+
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import CategoryFilter from "../../../components/news/CategoryFilter.astro";
+import BlogGrid from "../../../components/news/BlogGrid.astro";
+import "../../../styles/global.css";
+
+const STRAPI_URL =
+  import.meta.env.PUBLIC_STRAPI_URL;
+
+/* Categories */
+
+const categoryRes = await fetch(
+  `${STRAPI_URL}/api/categories?populate=*`
+);
+
+const categoryData =
+  await categoryRes.json();
+
+const categories =
+  categoryData?.data || [];
+
+/* Blogs */
+
+const blogRes = await fetch(
+  `${STRAPI_URL}/api/blogs?populate=*`
+);
+
+const blogData =
+  await blogRes.json();
+
+const blogs =
+  blogData?.data || [];
+---
+
+
+<DashboardLayout
+  title="Business News"
+  description="Read the latest AI marketing, business growth, startup and analytics news on GrowthPilot."
+  image="/og-image.png"
+>
+
+  <section
+    class="px-8 py-10"
+  >
+
+    <!-- Header -->
+
+    <div
+      class="mb-10"
+    >
+      <h1
+        class="text-4xl font-bold text-white"
+      >
+        News Center
+      </h1>
+
+      <p
+        class="mt-2 text-white/50"
+      >
+        Technology, Social Media, Marketing and Share Market updates.
+      </p>
+    </div>
+
+   <CategoryFilter
+  categories={categories}
+/>
+
+<BlogGrid
+  blogs={blogs}
+  strapiUrl={STRAPI_URL}
+/>
+
+</DashboardLayout>
+
+<script>
+
+const categoryButtons =
+  document.querySelectorAll(
+    ".category-btn"
+  );
+
+const blogCards =
+  document.querySelectorAll(
+    ".blog-card"
+  );
+
+categoryButtons.forEach(
+  (button) => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const selected =
+          button.dataset.category;
+
+        categoryButtons.forEach(
+          (btn) => {
+
+            btn.classList.remove(
+              "bg-lime-400",
+              "text-black"
+            );
+
+          }
+        );
+
+        button.classList.add(
+          "bg-lime-400",
+          "text-black"
+        );
+
+        blogCards.forEach(
+          (card) => {
+
+            const category =
+              card.dataset.category;
+
+            if (
+              selected === "all" ||
+              selected === category
+            ) {
+
+              card.style.display =
+                "block";
+
+            } else {
+
+              card.style.display =
+                "none";
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  }
+);
+
+</script>

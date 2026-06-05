@@ -1,0 +1,284 @@
+
+---
+const {
+  analytics = []
+} = Astro.props;
+
+/* =========================
+   CREATE LABELS
+========================= */
+
+const labels =
+  analytics.map(
+    (item) =>
+      `${item.month} ${item.year}`
+  );
+
+/* =========================
+   CREATE CUSTOMER DATA
+========================= */
+
+const customerData =
+  analytics.map(
+    (item) =>
+      Number(
+        item.customers || 0
+      )
+  );
+---
+
+<div
+  class="rounded-[32px] border border-white/10 bg-white/[0.04] p-8"
+>
+
+  <!-- HEADER -->
+
+  <div
+    class="mb-8"
+  >
+
+    <h2
+      class="text-3xl font-black text-white"
+    >
+      Customer Growth
+    </h2>
+
+    <p
+      class="mt-2 text-white/50"
+    >
+      Real-time customer growth analytics
+    </p>
+
+  </div>
+
+  <!-- CHART -->
+
+  <div
+    class="h-[400px]"
+  >
+
+    <canvas
+      id="customerChart"
+    ></canvas>
+
+  </div>
+
+</div>
+
+<script
+  type="module"
+  define:vars={{
+    labels,
+    customerData
+  }}
+>
+
+import {
+  Chart,
+  BarController,
+  LineController,
+  BarElement,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Filler
+}
+from "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm";
+
+Chart.register(
+  BarController,
+  LineController,
+  BarElement,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Filler
+);
+
+const canvas =
+  document.getElementById(
+    "customerChart"
+  );
+
+if (canvas) {
+
+  new Chart(
+    canvas,
+    {
+
+      data: {
+
+        labels,
+
+        datasets: [
+
+          {
+
+            type: "bar",
+
+            label: "Customers",
+
+            data: customerData,
+
+            backgroundColor:
+              "rgba(168,85,247,0.5)",
+
+            borderRadius: 14,
+
+            borderSkipped: false,
+
+            barThickness: 45
+
+          },
+
+          {
+
+            type: "line",
+
+            label: "Growth Trend",
+
+            data: customerData,
+
+            borderColor:
+              "#a855f7",
+
+            backgroundColor:
+              "rgba(168,85,247,0.15)",
+
+            fill: true,
+
+            tension: 0.4,
+
+            borderWidth: 3,
+
+            pointRadius: 5,
+
+            pointBackgroundColor:
+              "#a855f7"
+
+          }
+
+        ]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        animation: {
+
+          duration: 1500
+
+        },
+
+        plugins: {
+
+          legend: {
+
+            position: "top",
+
+            labels: {
+
+              color: "#ffffff",
+
+              font: {
+
+                size: 14,
+
+                weight: "bold"
+
+              }
+
+            }
+
+          },
+
+          tooltip: {
+
+            backgroundColor:
+              "#111827",
+
+            titleColor:
+              "#ffffff",
+
+            bodyColor:
+              "#d1d5db",
+
+            borderColor:
+              "#a855f7",
+
+            borderWidth: 1
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            ticks: {
+
+              color: "#9ca3af",
+
+              font: {
+
+                size: 13
+
+              }
+
+            },
+
+            grid: {
+
+              display: false
+
+            }
+
+          },
+
+          y: {
+
+            beginAtZero: true,
+
+            ticks: {
+
+              color: "#9ca3af",
+
+              font: {
+
+                size: 13
+
+              }
+
+            },
+
+            grid: {
+
+              color:
+                "rgba(255,255,255,0.05)"
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+</script>
+

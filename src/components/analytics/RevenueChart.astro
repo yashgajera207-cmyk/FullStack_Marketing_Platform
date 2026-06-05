@@ -1,0 +1,190 @@
+
+---
+const {
+  analytics = []
+} = Astro.props;
+
+const labels =
+  analytics.map(
+    (item) =>
+      `${item.month} ${item.year}`
+  );
+
+const revenueData =
+  analytics.map(
+    (item) =>
+      Number(
+        item.revenue || 0
+      )
+  );
+---
+
+<div
+  class="rounded-[32px] border border-white/10 bg-white/[0.04] p-8"
+>
+
+  <div class="mb-8">
+
+    <h2
+      class="text-3xl font-black text-white"
+    >
+      Revenue Trend
+    </h2>
+
+    <p
+      class="mt-2 text-white/50"
+    >
+      Real-time revenue analytics
+    </p>
+
+  </div>
+
+  <div
+    class="h-[400px]"
+  >
+
+    <canvas
+      id="revenueChart"
+    ></canvas>
+
+  </div>
+
+</div>
+
+<script
+  type="module"
+  define:vars={{
+    labels,
+    revenueData
+  }}
+>
+
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Filler,
+  Tooltip,
+  Legend
+}
+from "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm";
+
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Filler,
+  Tooltip,
+  Legend
+);
+
+const canvas =
+  document.getElementById(
+    "revenueChart"
+  );
+
+if (canvas) {
+
+  new Chart(
+    canvas,
+    {
+
+      type: "line",
+
+      data: {
+
+        labels,
+
+        datasets: [{
+
+          label: "Revenue",
+
+          data: revenueData,
+
+          borderColor:
+            "#84cc16",
+
+          backgroundColor:
+            "rgba(132,204,22,0.15)",
+
+          fill: true,
+
+          tension: 0.4,
+
+          borderWidth: 3
+
+        }]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: {
+
+            labels: {
+
+              color: "#ffffff"
+
+            }
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            ticks: {
+
+              color: "#9ca3af"
+
+            },
+
+            grid: {
+
+              color:
+                "rgba(255,255,255,0.05)"
+
+            }
+
+          },
+
+          y: {
+
+            ticks: {
+
+              color: "#9ca3af"
+
+            },
+
+            grid: {
+
+              color:
+                "rgba(255,255,255,0.05)"
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+</script>

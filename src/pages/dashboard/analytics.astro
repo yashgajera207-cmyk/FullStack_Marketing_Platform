@@ -1,0 +1,330 @@
+
+---
+export const prerender = false;
+
+import DashboardLayout
+from "../layouts/DashboardLayout.astro";
+
+
+import RevenueChart
+from "../../components/analytics/RevenueChart.astro";
+
+
+import SalesChart
+from "../../components/analytics/SalesChart.astro";
+
+import ExpenseChart
+from "../../components/analytics/ExpenseChart.astro";
+
+import CustomerChart
+from "../../components/analytics/CustomerChart.astro";
+
+import "../../styles/global.css";
+
+import { supabase }
+from "../../lib/supabase";
+
+/* FETCH ANALYTICS */
+
+const {
+  data
+} = await supabase
+  .from("business_analytics")
+  .select("*")
+  .order(
+    "created_at",
+    {
+      ascending: true
+    }
+  );
+
+const analytics =
+  data || [];
+
+/* TOTALS */
+
+const totalRevenue =
+  analytics.reduce(
+    (sum, item) =>
+      sum +
+      Number(item.revenue || 0),
+    0
+  );
+
+const totalSales =
+  analytics.reduce(
+    (sum, item) =>
+      sum +
+      Number(item.sales || 0),
+    0
+  );
+
+const totalCustomers =
+  analytics.reduce(
+    (sum, item) =>
+      sum +
+      Number(item.customers || 0),
+    0
+  );
+
+const totalExpenses =
+  analytics.reduce(
+    (sum, item) =>
+      sum +
+      Number(item.expenses || 0),
+    0
+  );
+
+const growthRate =
+  totalRevenue > 0
+    ? (
+        (
+          (
+            totalRevenue -
+            totalExpenses
+          ) /
+          totalRevenue
+        ) * 100
+      ).toFixed(1)
+    : 0;
+---
+
+
+<DashboardLayout
+  title="Analytics Dashboard"
+  description="Track revenue, sales, expenses and customer growth using GrowthPilot analytics."
+>
+
+
+
+<section
+  class="px-6 py-10"
+>
+
+  <!-- HEADER -->
+
+  <div class="mb-10">
+
+    <h1
+      class="text-5xl font-black text-white"
+    >
+      Business Analytics
+    </h1>
+
+    <p
+      class="mt-3 text-white/60"
+    >
+      Real-time business intelligence dashboard.
+    </p>
+
+  </div>
+
+  <!-- STATS -->
+
+  <div
+    class="grid gap-6 md:grid-cols-2 xl:grid-cols-5"
+  >
+
+    <div
+      class="rounded-[32px] border border-lime-400/20 bg-lime-400/10 p-8"
+    >
+      <p class="text-white/60">
+        Total Revenue
+      </p>
+
+      <h2
+        class="mt-4 text-5xl font-black text-lime-400"
+      >
+        ₹{totalRevenue}
+      </h2>
+    </div>
+
+    <div
+      class="rounded-[32px] border border-cyan-400/20 bg-cyan-400/10 p-8"
+    >
+      <p class="text-white/60">
+        Total Sales
+      </p>
+
+      <h2
+        class="mt-4 text-5xl font-black text-cyan-400"
+      >
+        {totalSales}
+      </h2>
+    </div>
+
+    <div
+      class="rounded-[32px] border border-purple-400/20 bg-purple-400/10 p-8"
+    >
+      <p class="text-white/60">
+        Customers
+      </p>
+
+      <h2
+        class="mt-4 text-5xl font-black text-purple-400"
+      >
+        {totalCustomers}
+      </h2>
+    </div>
+
+    <div
+      class="rounded-[32px] border border-red-400/20 bg-red-400/10 p-8"
+    >
+      <p class="text-white/60">
+        Expenses
+      </p>
+
+      <h2
+        class="mt-4 text-5xl font-black text-red-400"
+      >
+        ₹{totalExpenses}
+      </h2>
+    </div>
+
+    <div
+      class="rounded-[32px] border border-orange-400/20 bg-orange-400/10 p-8"
+    >
+      <p class="text-white/60">
+        Growth Rate
+      </p>
+
+      <h2
+        class="mt-4 text-5xl font-black text-orange-400"
+      >
+        {growthRate}%
+      </h2>
+    </div>
+
+  </div>
+
+  <!-- CHARTS -->
+
+  <div
+    class="mt-12 grid gap-8 xl:grid-cols-2"
+  >
+
+    <RevenueChart
+      analytics={analytics}
+    />
+
+    <SalesChart
+      analytics={analytics}
+    />
+
+    <ExpenseChart
+      analytics={analytics}
+    />
+
+    <CustomerChart
+      analytics={analytics}
+    />
+
+  </div>
+
+  <!-- TABLE -->
+
+  <div
+    class="mt-12 rounded-[32px] border border-white/10 bg-white/[0.04] p-8"
+  >
+
+    <h2
+      class="mb-8 text-3xl font-black text-white"
+    >
+      Latest Analytics
+    </h2>
+
+    <div
+      class="overflow-x-auto"
+    >
+
+      <table
+        class="w-full min-w-[900px]"
+      >
+
+        <thead>
+
+          <tr
+            class="border-b border-white/10 text-left"
+          >
+
+            <th class="pb-5 text-white/60">
+              Month
+            </th>
+
+            <th class="pb-5 text-white/60">
+              Revenue
+            </th>
+
+            <th class="pb-5 text-white/60">
+              Sales
+            </th>
+
+            <th class="pb-5 text-white/60">
+              Expenses
+            </th>
+
+            <th class="pb-5 text-white/60">
+              Customers
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {
+            analytics.map(
+              (item) => (
+
+                <tr
+                  class="border-b border-white/5"
+                >
+
+                  <td
+                    class="py-5 text-white"
+                  >
+                    {item.month} {item.year}
+                  </td>
+
+                  <td
+                    class="py-5 text-lime-400"
+                  >
+                    ₹{item.revenue}
+                  </td>
+
+                  <td
+                    class="py-5 text-cyan-400"
+                  >
+                    {item.sales}
+                  </td>
+
+                  <td
+                    class="py-5 text-red-400"
+                  >
+                    ₹{item.expenses}
+                  </td>
+
+                  <td
+                    class="py-5 text-purple-400"
+                  >
+                    {item.customers}
+                  </td>
+
+                </tr>
+
+              )
+            )
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+</DashboardLayout>

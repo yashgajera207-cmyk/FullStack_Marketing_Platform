@@ -1,0 +1,446 @@
+
+---
+export const prerender = false;
+
+import "../../styles/global.css";
+
+import DashboardLayout
+from "../layouts/DashboardLayout.astro";
+---
+
+<DashboardLayout title="Dashboard">
+
+<main
+  class="mx-auto max-w-7xl px-6 py-10"
+>
+
+  <!-- HERO -->
+
+  <section
+    class="relative overflow-hidden rounded-[40px] border border-white/10 bg-gradient-to-br from-[#0B1220] via-[#0D1326] to-[#111827] p-10"
+  >
+
+    <!-- BG -->
+
+    <div
+      class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-lime-400/20 blur-[120px]"
+    ></div>
+
+    <div
+      class="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-[120px]"
+    ></div>
+
+    <div
+      class="relative z-10 grid items-center gap-10 lg:grid-cols-2"
+    >
+
+      <!-- LEFT -->
+
+      <div>
+
+        <span
+          class="inline-flex rounded-full border border-lime-400/20 bg-lime-400/10 px-5 py-2 text-sm font-semibold text-lime-400"
+        >
+          🚀 AI Marketing Platform
+        </span>
+
+        <h1
+          class="mt-6 text-5xl font-black leading-tight text-white xl:text-6xl"
+        >
+          Welcome Back To
+
+          <span
+            class="bg-gradient-to-r from-lime-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent"
+          >
+            GrowthPilot
+          </span>
+        </h1>
+
+        <p
+          class="mt-6 max-w-2xl text-lg leading-relaxed text-white/60"
+        >
+          Manage analytics, AI automation,
+          business growth, marketing campaigns,
+          customers and your team from one
+          intelligent dashboard.
+        </p>
+
+        <!-- BUTTONS -->
+
+        <div
+          class="mt-8 flex flex-wrap gap-4"
+        >
+
+          <a
+            href="/dashboard/analytics"
+            class="rounded-2xl bg-lime-400 px-8 py-4 font-bold text-black transition-all duration-300 hover:scale-105 hover:bg-lime-300"
+          >
+            View Analytics
+          </a>
+
+          <a
+            href="/dashboard/assistant"
+            class="rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white transition hover:bg-white/10"
+          >
+            Open AI Assistant
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div
+        class="grid gap-5 sm:grid-cols-2"
+      >
+
+        <div
+          class="rounded-3xl border border-lime-400/20 bg-lime-400/10 p-6 backdrop-blur-xl"
+        >
+
+          <p
+            class="text-sm text-white/60"
+          >
+            Total Revenue
+          </p>
+
+          <h2
+            class="mt-3 text-5xl font-black text-lime-400"
+          >
+            ₹2.4M
+          </h2>
+
+          <p
+            class="mt-2 text-sm text-lime-300"
+          >
+            +18% Growth
+          </p>
+
+        </div>
+
+        <div
+          class="rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-6 backdrop-blur-xl"
+        >
+
+          <p
+            class="text-sm text-white/60"
+          >
+            Active Leads
+          </p>
+
+          <h2
+            class="mt-3 text-5xl font-black text-cyan-400"
+          >
+            1,245
+          </h2>
+
+          <p
+            class="mt-2 text-sm text-cyan-300"
+          >
+            +245 This Month
+          </p>
+
+        </div>
+
+        <div
+          class="rounded-3xl border border-purple-400/20 bg-purple-400/10 p-6 backdrop-blur-xl"
+        >
+
+          <p
+            class="text-sm text-white/60"
+          >
+            AI Requests
+          </p>
+
+          <h2
+            class="mt-3 text-5xl font-black text-purple-400"
+          >
+            12K
+          </h2>
+
+          <p
+            class="mt-2 text-sm text-purple-300"
+          >
+            AI Automation Running
+          </p>
+
+        </div>
+
+        <div
+          class="rounded-3xl border border-orange-400/20 bg-orange-400/10 p-6 backdrop-blur-xl"
+        >
+
+          <p
+            class="text-sm text-white/60"
+          >
+            Team Members
+          </p>
+
+          <h2
+            class="mt-3 text-5xl font-black text-orange-400"
+          >
+            18
+          </h2>
+
+          <p
+            class="mt-2 text-sm text-orange-300"
+          >
+            Collaboration Active
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- QUICK ACTIONS -->
+
+  <section
+    class="mt-12"
+  >
+
+    <div
+      class="mb-8 flex items-center justify-between"
+    >
+
+      <div>
+
+        <h2
+          class="text-4xl font-black text-white"
+        >
+          Quick Actions
+        </h2>
+
+        <p
+          class="mt-2 text-white/50"
+        >
+          Access your most used tools instantly.
+        </p>
+
+      </div>
+
+    </div>
+
+    <div
+      class="grid gap-6 lg:grid-cols-3"
+    >
+
+      <!-- CARD -->
+
+      <a
+        href="/dashboard/analytics"
+        class="group overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400"
+      >
+
+        <div
+          class="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400/10 text-3xl"
+        >
+          📊
+        </div>
+
+        <h3
+          class="text-3xl font-black text-white"
+        >
+          Analytics
+        </h3>
+
+        <p
+          class="mt-4 leading-relaxed text-white/60"
+        >
+          Monitor revenue, sales, growth,
+          expenses and customer analytics.
+        </p>
+
+      </a>
+
+      <!-- CARD -->
+
+      <a
+        href="/dashboard/assistant"
+        class="group overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-lime-400"
+      >
+
+        <div
+          class="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-lime-400/10 text-3xl"
+        >
+          🤖
+        </div>
+
+        <h3
+          class="text-3xl font-black text-white"
+        >
+          AI Assistant
+        </h3>
+
+        <p
+          class="mt-4 leading-relaxed text-white/60"
+        >
+          Generate content, campaigns,
+          strategies and AI-powered marketing.
+        </p>
+
+      </a>
+
+      <!-- CARD -->
+
+      <a
+        href="/dashboard/team"
+        class="group overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-purple-400"
+      >
+
+        <div
+          class="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-400/10 text-3xl"
+        >
+          👥
+        </div>
+
+        <h3
+          class="text-3xl font-black text-white"
+        >
+          Team Management
+        </h3>
+
+        <p
+          class="mt-4 leading-relaxed text-white/60"
+        >
+          Manage employees, collaboration,
+          workflow and communication.
+        </p>
+
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- RECENT ACTIVITY -->
+
+  <section
+    class="mt-12 rounded-[36px] border border-white/10 bg-white/[0.04] p-8"
+  >
+
+    <div
+      class="mb-8 flex items-center justify-between"
+    >
+
+      <div>
+
+        <h2
+          class="text-4xl font-black text-white"
+        >
+          Recent Activity
+        </h2>
+
+        <p
+          class="mt-2 text-white/50"
+        >
+          Latest business and AI updates.
+        </p>
+
+      </div>
+
+    </div>
+
+    <div
+      class="space-y-5"
+    >
+
+      <div
+        class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+      >
+
+        <div
+          class="mt-1 flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400/10 text-2xl"
+        >
+          🚀
+        </div>
+
+        <div>
+
+          <h3
+            class="font-bold text-white"
+          >
+            New Marketing Campaign Created
+          </h3>
+
+          <p
+            class="mt-2 text-white/50"
+          >
+            AI generated a new Facebook and
+            Instagram campaign strategy.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+      >
+
+        <div
+          class="mt-1 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-400/10 text-2xl"
+        >
+          📈
+        </div>
+
+        <div>
+
+          <h3
+            class="font-bold text-white"
+          >
+            Revenue Increased
+          </h3>
+
+          <p
+            class="mt-2 text-white/50"
+          >
+            Revenue analytics show 18% business
+            growth this month.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+      >
+
+        <div
+          class="mt-1 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-400/10 text-2xl"
+        >
+          🤖
+        </div>
+
+        <div>
+
+          <h3
+            class="font-bold text-white"
+          >
+            AI Assistant Completed Tasks
+          </h3>
+
+          <p
+            class="mt-2 text-white/50"
+          >
+            Generated 24 content ideas and
+            optimized campaign performance.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+</DashboardLayout>
+

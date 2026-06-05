@@ -1,0 +1,41 @@
+---
+interface Props {
+  categories: any[];
+}
+
+const { categories } = Astro.props;
+---
+
+<div
+  class="mb-10 flex flex-wrap gap-3"
+>
+
+  <button
+    class="category-btn rounded-2xl bg-lime-400 px-5 py-3 font-semibold text-black"
+    data-category="all"
+  >
+    All
+  </button>
+
+  {
+    categories.map(
+      (category) => (
+
+        <button
+          class="category-btn rounded-2xl border border-white/10 bg-white/5 px-5 py-3 font-semibold text-white transition hover:border-lime-400"
+          data-category={
+            category.slug ||
+            category.attributes?.slug
+          }
+        >
+          {
+            category.name ||
+            category.attributes?.name
+          }
+        </button>
+
+      )
+    )
+  }
+
+</div>

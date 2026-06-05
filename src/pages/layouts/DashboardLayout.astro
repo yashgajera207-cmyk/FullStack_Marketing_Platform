@@ -1,0 +1,194 @@
+
+---
+const {
+  title = "GrowthPilot Dashboard",
+  description = "AI-powered business analytics and marketing dashboard.",
+  image = "/og-image.png",
+  noindex = false
+} = Astro.props;
+
+import {
+  ClientRouter
+} from "astro:transitions";
+
+import Navbar
+from "../../components/dashboard/Navbar.astro";
+
+import Footer
+from "../../components/dashboard/Footer.astro";
+
+/* CANONICAL URL */
+
+const canonicalURL =
+  new URL(
+    Astro.url.pathname,
+    Astro.site
+  ).href;
+---
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <!-- BASIC -->
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <!-- TITLE -->
+
+  <title>
+    {title}
+  </title>
+
+  <!-- SEO -->
+
+  <meta
+    name="description"
+    content={description}
+  />
+
+  <meta
+    name="keywords"
+    content="
+      AI marketing,
+      business analytics,
+      dashboard,
+      advisor management,
+      team collaboration,
+      GrowthPilot
+    "
+  />
+
+  <meta
+    name="robots"
+    content={
+      noindex
+        ? "noindex,nofollow"
+        : "index,follow"
+    }
+  />
+
+  <!-- CANONICAL -->
+
+  <link
+    rel="canonical"
+    href={canonicalURL}
+  />
+
+  <!-- OPEN GRAPH -->
+
+  <meta
+    property="og:type"
+    content="website"
+  />
+
+  <meta
+    property="og:title"
+    content={title}
+  />
+
+  <meta
+    property="og:description"
+    content={description}
+  />
+
+  <meta
+    property="og:image"
+    content={image}
+  />
+
+  <meta
+    property="og:url"
+    content={canonicalURL}
+  />
+
+  <!-- TWITTER -->
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  />
+
+  <meta
+    name="twitter:title"
+    content={title}
+  />
+
+  <meta
+    name="twitter:description"
+    content={description}
+  />
+
+  <meta
+    name="twitter:image"
+    content={image}
+  />
+
+  <!-- FAVICON -->
+
+  <link
+    rel="icon"
+    href="/favicon.ico"
+  />
+
+  <!-- JSON-LD -->
+
+  <script
+    type="application/ld+json"
+    is:inline
+  >
+
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "GrowthPilot",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web Browser",
+    "description": "AI-powered business analytics and marketing dashboard.",
+    "url": "http://localhost:4321"
+  }
+
+  </script>
+
+  <!-- ASTRO SPA -->
+
+  <ClientRouter />
+
+</head>
+
+<body
+  class="min-h-screen bg-[#050816] text-white"
+>
+
+  <!-- NAVBAR -->
+
+  <Navbar
+    transition:persist
+  />
+
+  <!-- PAGE -->
+
+  <main
+    class="min-h-[calc(100vh-140px)]"
+  >
+
+    <slot />
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <Footer
+    transition:persist
+  />
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+/* Custom Scrollbar */
+
+#conversationList::-webkit-scrollbar,
+#messagesContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+#conversationList::-webkit-scrollbar-thumb,
+#messagesContainer::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.15);
+  border-radius: 999px;
+}
+
+/* Glass Effect */
+
+.glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Fade Animation */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: fadeInUp .25s ease;
+}
+
+/* Hover Card */
+
+.chat-card {
+  transition: all .25s ease;
+}
+
+.chat-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Textarea */
+
+#messageInput {
+  min-height: 60px;
+  max-height: 220px;
+}
+
+/* Smooth Scroll */
+
+html {
+  scroll-behavior: smooth;
+}

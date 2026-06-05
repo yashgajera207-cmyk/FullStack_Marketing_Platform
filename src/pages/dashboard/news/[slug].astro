@@ -1,0 +1,467 @@
+
+---
+export const prerender = false;
+
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import "../../../styles/global.css";
+
+const STRAPI_URL =
+  import.meta.env.PUBLIC_STRAPI_URL;
+
+const { slug } =
+  Astro.params;
+
+/* =========================
+   FETCH BLOG
+========================= */
+
+const response =
+  await fetch(
+    `${STRAPI_URL}/api/blogs?filters[slug][$eq]=${slug}&populate=*`
+  );
+
+const result =
+  await response.json();
+
+const blog =
+  result?.data?.[0];
+
+if (!blog) {
+  return Astro.redirect(
+    "/dashboard/news"
+  );
+}
+
+const item =
+  blog.attributes || blog;
+
+/* =========================
+   IMAGE
+========================= */
+
+const image =
+  item?.featured_image?.url ||
+  item?.featured_image?.data?.attributes?.url;
+
+/* =========================
+   CATEGORY
+========================= */
+
+const category =
+  item?.category?.name ||
+  item?.category?.data?.attributes?.name ||
+  "";
+
+const categorySlug =
+  item?.category?.slug ||
+  item?.category?.data?.attributes?.slug ||
+  "";
+
+/* =========================
+   CONTENT FIX
+========================= */
+
+let blogContent = "";
+
+if (
+  Array.isArray(item.content)
+) {
+
+  blogContent =
+    item.content
+      .map((block) => {
+
+        if (
+          block?.children
+        ) {
+
+          return `
+            <p>
+              ${
+                block.children
+                  .map(
+                    (child) =>
+                      child.text
+                  )
+                  .join("")
+              }
+            </p>
+          `;
+
+        }
+
+        return "";
+
+      })
+      .join("");
+
+} else {
+
+  blogContent =
+    item.content || "";
+
+}
+
+/* =========================
+   RELATED BLOGS
+========================= */
+
+const relatedResponse =
+  await fetch(
+    `${STRAPI_URL}/api/blogs?filters[category][slug][$eq]=${categorySlug}&populate=*`
+  );
+
+const relatedResult =
+  await relatedResponse.json();
+
+const relatedBlogs =
+  relatedResult?.data || [];
+---
+
+<DashboardLayout title={item.title}>
+
+  <!-- Progress Bar -->
+
+  <div
+    id="progressBar"
+    class="fixed left-0 top-0 z-[9999] h-[3px] w-0 bg-lime-400 transition-all duration-150"
+  ></div>
+
+  <section
+    class="relative overflow-hidden px-6 py-10 lg:px-10"
+  >
+
+    <!-- Background Glow -->
+
+    <div
+      class="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-lime-400/10 blur-[140px]"
+    ></div>
+
+    <div
+      class="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-cyan-400/10 blur-[140px]"
+    ></div>
+
+    <!-- HERO -->
+
+    <div
+      class="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/[0.04] shadow-2xl"
+    >
+
+      <img
+        src={
+          image
+            ? image.startsWith("http")
+              ? image
+              : STRAPI_URL + image
+            : "https://placehold.co/1400x700?text=Blog"
+        }
+        alt={item.title}
+        class="h-[300px] w-full object-cover md:h-[450px] xl:h-[650px]"
+      />
+
+      <!-- Overlay -->
+
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/40 to-transparent"
+      ></div>
+
+      <!-- Hero Content -->
+
+      <div
+        class="absolute bottom-0 left-0 w-full p-8 md:p-14"
+      >
+
+        <span
+          class="rounded-full border border-lime-400/20 bg-lime-400/10 px-5 py-2 text-sm font-semibold text-lime-400 backdrop-blur-xl"
+        >
+          {category}
+        </span>
+
+        <h1
+          class="mt-6 max-w-5xl text-4xl font-black leading-tight text-white md:text-6xl"
+        >
+          {item.title}
+        </h1>
+
+        <div
+          class="mt-6 flex flex-wrap gap-6 text-sm text-white/70"
+        >
+
+          <span>
+            By
+            <span class="font-semibold text-white">
+              {item.author || "Admin"}
+            </span>
+          </span>
+
+          <span>
+            {
+              item.publish_date
+                ? new Date(
+                    item.publish_date
+                  ).toLocaleDateString()
+                : "-"
+            }
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ARTICLE LAYOUT -->
+
+    <div
+      class="mx-auto mt-16 grid max-w-7xl gap-12 lg:grid-cols-[1fr_320px]"
+    >
+
+      <!-- MAIN CONTENT -->
+
+      <article
+        class="rounded-[32px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl md:p-12"
+      >
+
+        {
+          item.excerpt && (
+            <p
+              class="mb-10 border-l-4 border-lime-400 pl-6 text-2xl leading-relaxed text-white/70"
+            >
+              {item.excerpt}
+            </p>
+          )
+        }
+
+        <div
+          class="prose prose-invert max-w-none prose-headings:text-white prose-p:text-white/80 prose-p:leading-[2] prose-a:text-lime-400 prose-strong:text-white prose-li:text-white/80"
+          set:html={blogContent}
+        />
+
+      </article>
+
+      <!-- SIDEBAR -->
+
+      <aside
+        class="sticky top-28 h-fit space-y-6"
+      >
+
+        <!-- Author Card -->
+
+        <div
+          class="rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl"
+        >
+
+          <h3
+            class="text-xl font-bold text-white"
+          >
+            Author
+          </h3>
+
+          <div
+            class="mt-5 flex items-center gap-4"
+          >
+
+            <div
+              class="flex h-14 w-14 items-center justify-center rounded-full bg-lime-400 text-xl font-black text-black"
+            >
+              {
+                item.author
+                  ? item.author.charAt(0)
+                  : "A"
+              }
+            </div>
+
+            <div>
+
+              <p
+                class="font-semibold text-white"
+              >
+                {item.author || "Admin"}
+              </p>
+
+              <p
+                class="text-sm text-white/50"
+              >
+                Content Writer
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Share -->
+
+        <div
+          class="rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl"
+        >
+
+          <h3
+            class="text-xl font-bold text-white"
+          >
+            Share Article
+          </h3>
+
+          <div
+            class="mt-5 flex gap-3"
+          >
+
+            <button
+              class="rounded-2xl bg-blue-500 px-5 py-3 font-semibold text-white transition hover:scale-105"
+            >
+              Facebook
+            </button>
+
+            <button
+              class="rounded-2xl bg-sky-500 px-5 py-3 font-semibold text-white transition hover:scale-105"
+            >
+              Twitter
+            </button>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- RELATED ARTICLES -->
+
+    <div
+      class="mt-24"
+    >
+
+      <div
+        class="mb-10 flex items-center justify-between"
+      >
+
+        <h2
+          class="text-4xl font-black text-white"
+        >
+          Related Articles
+        </h2>
+
+      </div>
+
+      <div
+        class="grid gap-8 md:grid-cols-2 xl:grid-cols-3"
+      >
+
+        {
+          relatedBlogs
+            .filter(
+              (related) =>
+                (
+                  related.attributes?.slug ||
+                  related.slug
+                ) !== slug
+            )
+            .slice(0, 3)
+            .map((related) => {
+
+              const relatedItem =
+                related.attributes ||
+                related;
+
+              const relatedImage =
+                relatedItem?.featured_image?.url ||
+                relatedItem?.featured_image?.data?.attributes?.url;
+
+              return (
+
+                <a
+                  href={`/dashboard/news/${relatedItem.slug}`}
+                  class="group overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] transition-all duration-500 hover:-translate-y-2 hover:border-lime-400"
+                >
+
+                  <div
+                    class="overflow-hidden"
+                  >
+
+                    <img
+                      src={
+                        relatedImage
+                          ? relatedImage.startsWith("http")
+                            ? relatedImage
+                            : STRAPI_URL + relatedImage
+                          : "https://placehold.co/600x400?text=News"
+                      }
+                      alt={relatedItem.title}
+                      class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+
+                  </div>
+
+                  <div
+                    class="p-7"
+                  >
+
+                    <div
+                      class="mb-4 inline-flex rounded-full bg-lime-400/10 px-4 py-1 text-xs font-semibold text-lime-400"
+                    >
+                      {category}
+                    </div>
+
+                    <h3
+                      class="line-clamp-2 text-2xl font-bold text-white"
+                    >
+                      {relatedItem.title}
+                    </h3>
+
+                    <p
+                      class="mt-4 line-clamp-3 text-white/60"
+                    >
+                      {relatedItem.excerpt}
+                    </p>
+
+                    <div
+                      class="mt-6 inline-flex items-center gap-2 font-semibold text-lime-400"
+                    >
+                      Read Article →
+                    </div>
+
+                  </div>
+
+                </a>
+
+              );
+
+            })
+        }
+
+      </div>
+
+    </div>
+
+  </section>
+
+</DashboardLayout>
+
+<script>
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    const scrollTop =
+      window.scrollY;
+
+    const docHeight =
+      document.body.scrollHeight -
+      window.innerHeight;
+
+    const progress =
+      (scrollTop / docHeight) * 100;
+
+    document.getElementById(
+      "progressBar"
+    ).style.width =
+      progress + "%";
+
+  }
+);
+
+</script>
+```

@@ -1,0 +1,674 @@
+
+<header
+  class="sticky top-0 z-50 border-b border-white/10 bg-black/20 backdrop-blur-xl"
+>
+  <div
+    class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6"
+  >
+    <!-- Logo -->
+
+
+<a
+  href="/dashboard"
+  class="bg-gradient-to-r from-lime-400 via-cyan-400 to-purple-500 bg-clip-text text-3xl font-black text-transparent transition hover:scale-105"
+>
+  GrowthPilot
+</a>
+
+<!-- Navigation -->
+
+<nav
+  class="hidden items-center gap-8 lg:flex"
+>
+  <a
+    href="/dashboard"
+    data-nav-link
+    class="transition hover:text-lime-400"
+  >
+    Home
+  </a>
+
+  <a
+    href="/dashboard/analytics"
+    data-nav-link
+    class="transition hover:text-lime-400"
+  >
+    Analytics
+  </a>
+
+  <a
+    href="/dashboard/team"
+    data-nav-link
+    class="transition hover:text-lime-400"
+  >
+    Advicer
+  </a>
+
+  <a
+    href="/dashboard/assistant"
+    data-nav-link
+    class="transition hover:text-lime-400"
+  >
+    AI Assistant
+  </a>
+   <a
+    href="/dashboard/news/news"
+    data-nav-link
+    class="transition hover:text-lime-400"
+  >
+    News
+  </a>
+  <a
+    href="/dashboard/settings"
+    data-nav-link
+    class="transition hover:text-lime-400"
+  >
+    Settings
+  </a>
+</nav>
+
+<!-- Profile -->
+
+<div class="relative">
+
+  <button
+    id="profileBtn"
+    class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 transition hover:border-lime-400"
+  >
+    <div
+      id="profileAvatar"
+      class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-lime-400 to-cyan-400 font-bold text-black"
+    >
+      U
+    </div>
+
+    <div class="text-left">
+      <p
+        id="profileName"
+        class="font-semibold"
+      >
+        Loading...
+      </p>
+
+      <p
+        id="profileEmail"
+        class="text-xs text-gray-400"
+      >
+        Loading...
+      </p>
+    </div>
+  </button>
+
+  <!-- Profile Dropdown -->
+
+ <div
+  id="profileDropdown"
+  class="absolute right-0 top-20 z-50 hidden w-[450px] overflow-hidden rounded-[32px] border border-white/10 bg-[#0B1220]/95 shadow-[0_25px_100px_rgba(0,0,0,.5)] backdrop-blur-2xl"
+>
+
+  <!-- Header -->
+
+  <div
+  class="relative overflow-hidden bg-gradient-to-br from-lime-400/10 via-cyan-400/10 to-purple-500/10 p-6"
+>
+
+<div
+  class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl"
+></div>
+
+<div
+  class="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-lime-400/10 blur-3xl"
+></div>
+
+<div class="relative flex items-center gap-5">
+
+  <!-- Logo -->
+
+  <div
+    id="dropdownAvatar"
+    class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white p-2 shadow-xl transition-all duration-300 hover:scale-105"
+  >
+    U
+  </div>
+
+  <!-- Company Info -->
+
+  <div class="flex-1">
+
+    <div class="flex items-center gap-2">
+
+      <h3
+        id="businessName"
+        class="text-2xl font-extrabold text-white"
+      >
+        Loading...
+      </h3>
+
+      <span
+        class="rounded-full bg-lime-400/20 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-lime-400"
+      >
+        Verified
+      </span>
+
+    </div>
+
+    <p
+      id="dropdownName"
+      class="mt-2 text-lg font-medium text-lime-400"
+    >
+      Loading...
+    </p>
+
+    <p
+      id="dropdownEmail"
+      class="mt-1 text-sm text-gray-400"
+    >
+      Loading...
+    </p>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- Body -->
+
+  <div class="space-y-4 p-5">
+
+
+<!-- Phone -->
+
+<div
+  class="group rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-lime-400/40 hover:bg-white/10"
+>
+  <p
+    class="text-xs font-medium uppercase tracking-[2px] text-gray-400"
+  >
+    Phone Number
+  </p>
+
+  <p
+    id="phone"
+    class="mt-2 text-lg font-semibold text-white"
+  >
+    Loading...
+  </p>
+</div>
+
+<!-- GST -->
+
+<div
+  class="group rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-cyan-400/40 hover:bg-white/10"
+>
+  <p
+    class="text-xs font-medium uppercase tracking-[2px] text-gray-400"
+  >
+    GST Number
+  </p>
+
+  <p
+    id="gst"
+    class="mt-2 text-lg font-semibold text-white"
+  >
+    Loading...
+  </p>
+</div>
+
+<!-- Address -->
+
+<div
+  class="group rounded-2xl border border-white/10 bg-white/5 p-4 transition-all duration-300 hover:border-purple-400/40 hover:bg-white/10"
+>
+  <p
+    class="text-xs font-medium uppercase tracking-[2px] text-gray-400"
+  >
+    Business Address
+  </p>
+
+  <p
+    id="address"
+    class="mt-2 leading-relaxed text-white"
+  >
+    Loading...
+  </p>
+</div>
+
+<!-- Logout -->
+
+<a
+  href="/api/auth/logout"
+  class="flex items-center justify-center rounded-2xl bg-gradient-to-r from-red-500 to-red-600 px-5 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-red-500/20"
+>
+  Logout
+</a>
+
+
+  </div>
+
+</div>
+
+
+  </div>
+</header>
+
+<script type="module">
+
+/* ===================================
+   GLOBAL FLAGS
+=================================== */
+
+let dropdownInitialized =
+  false;
+
+let cachedProfile =
+  null;
+
+/* ===================================
+   ACTIVE NAVBAR
+=================================== */
+
+function updateActiveNav() {
+
+  const currentPath =
+    window.location.pathname;
+
+  const navLinks =
+    document.querySelectorAll(
+      "[data-nav-link]"
+    );
+
+  navLinks.forEach(
+    (link) => {
+
+      link.classList.remove(
+        "text-lime-400"
+      );
+
+      if (
+        link.getAttribute(
+          "href"
+        ) === currentPath
+      ) {
+
+        link.classList.add(
+          "text-lime-400"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+/* ===================================
+   RENDER PROFILE
+=================================== */
+
+function renderProfile(
+  user
+) {
+
+  if (!user)
+    return;
+
+  /* NAVBAR */
+
+  const profileName =
+    document.getElementById(
+      "profileName"
+    );
+
+  const profileEmail =
+    document.getElementById(
+      "profileEmail"
+    );
+
+  if (profileName) {
+
+    profileName.textContent =
+      user.business_name ||
+      "Business";
+
+  }
+
+  if (profileEmail) {
+
+    profileEmail.textContent =
+      user.owner_name ||
+      "Owner";
+
+  }
+
+  /* DROPDOWN */
+
+  const businessName =
+    document.getElementById(
+      "businessName"
+    );
+
+  const dropdownName =
+    document.getElementById(
+      "dropdownName"
+    );
+
+  const dropdownEmail =
+    document.getElementById(
+      "dropdownEmail"
+    );
+
+  const phone =
+    document.getElementById(
+      "phone"
+    );
+
+  const gst =
+    document.getElementById(
+      "gst"
+    );
+
+  const address =
+    document.getElementById(
+      "address"
+    );
+
+  if (businessName) {
+
+    businessName.textContent =
+      user.business_name ||
+      "-";
+
+  }
+
+  if (dropdownName) {
+
+    dropdownName.textContent =
+      user.owner_name ||
+      "-";
+
+  }
+
+  if (dropdownEmail) {
+
+    dropdownEmail.textContent =
+      user.email ||
+      "-";
+
+  }
+
+  if (phone) {
+
+    phone.textContent =
+      user.phone ||
+      "-";
+
+  }
+
+  if (gst) {
+
+    gst.textContent =
+      user.gst_number ||
+      "-";
+
+  }
+
+  if (address) {
+
+    address.textContent =
+      user.address ||
+      "-";
+
+  }
+
+  /* LOGOS */
+
+  const profileAvatar =
+    document.getElementById(
+      "profileAvatar"
+    );
+
+  const dropdownAvatar =
+    document.getElementById(
+      "dropdownAvatar"
+    );
+
+  if (
+    user.logo_url &&
+    user.logo_url.trim() !== ""
+  ) {
+
+    if (profileAvatar) {
+
+      profileAvatar.innerHTML = `
+        <img
+          src="${user.logo_url}"
+          class="h-12 w-12 rounded-xl object-cover"
+        />
+      `;
+
+    }
+
+    if (dropdownAvatar) {
+
+      dropdownAvatar.innerHTML = `
+        <img
+          src="${user.logo_url}"
+          class="h-full w-full object-cover"
+        />
+      `;
+
+    }
+
+  }
+
+}
+
+/* ===================================
+   LOAD PROFILE
+=================================== */
+
+async function loadProfile() {
+
+  try {
+
+    /* USE CACHE */
+
+    if (cachedProfile) {
+
+      renderProfile(
+        cachedProfile
+      );
+
+      return;
+
+    }
+
+    const response =
+      await fetch(
+        "/api/business/profile"
+      );
+
+    const result =
+      await response.json();
+
+    if (
+      !result.success
+    ) {
+
+      console.error(
+        result.message
+      );
+
+      return;
+
+    }
+
+    const user =
+      result.user;
+
+    /* SAVE CACHE */
+
+    cachedProfile =
+      user;
+
+    /* RENDER */
+
+    renderProfile(
+      user
+    );
+
+  } catch (error) {
+
+    console.error(
+      "PROFILE ERROR:",
+      error
+    );
+
+  }
+
+}
+
+/* ===================================
+   DROPDOWN
+=================================== */
+
+function initDropdown() {
+
+  if (
+    dropdownInitialized
+  ) return;
+
+  dropdownInitialized =
+    true;
+
+  const profileBtn =
+    document.getElementById(
+      "profileBtn"
+    );
+
+  const dropdown =
+    document.getElementById(
+      "profileDropdown"
+    );
+
+  if (
+    !profileBtn ||
+    !dropdown
+  ) return;
+
+  /* BUTTON */
+
+  profileBtn.addEventListener(
+    "click",
+    (e) => {
+
+      e.stopPropagation();
+
+      dropdown.classList.toggle(
+        "hidden"
+      );
+
+    }
+  );
+
+  /* OUTSIDE CLICK */
+
+  document.addEventListener(
+    "click",
+    (e) => {
+
+      if (
+        !dropdown.contains(
+          e.target
+        ) &&
+        !profileBtn.contains(
+          e.target
+        )
+      ) {
+
+        dropdown.classList.add(
+          "hidden"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+/* ===================================
+   INIT NAVBAR
+=================================== */
+
+async function initNavbar() {
+
+  updateActiveNav();
+
+  await loadProfile();
+
+  initDropdown();
+
+}
+
+/* ===================================
+   FIRST PAGE LOAD
+=================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    await initNavbar();
+
+  }
+);
+
+/* ===================================
+   ASTRO SPA NAVIGATION
+=================================== */
+
+document.addEventListener(
+  "astro:page-load",
+  async () => {
+
+    /* WAIT FOR DOM */
+
+    setTimeout(
+      async () => {
+
+        updateActiveNav();
+
+        /* RENDER CACHED PROFILE */
+
+        if (
+          cachedProfile
+        ) {
+
+          renderProfile(
+            cachedProfile
+          );
+
+        } else {
+
+          await loadProfile();
+
+        }
+
+        initDropdown();
+
+      },
+      50
+    );
+
+  }
+);
+
+</script>
+
+
+
+
+

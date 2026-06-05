@@ -1,0 +1,54 @@
+---
+interface Props {
+  role: string;
+  content: string;
+}
+
+const {
+  role,
+  content
+} = Astro.props;
+
+const isUser =
+  role === "user";
+---
+
+<div
+  class={`flex animate-[fadeIn_.25s_ease] ${
+    isUser
+      ? "justify-end"
+      : "justify-start"
+  }`}
+>
+
+  <div
+    class={`max-w-[75%] rounded-[28px] px-5 py-4 shadow-lg transition-all duration-300 hover:-translate-y-0.5 ${
+      isUser
+        ? "bg-gradient-to-r from-lime-400 to-lime-300 text-black"
+        : "border border-white/10 bg-white/5 text-white backdrop-blur-xl"
+    }`}
+  >
+
+    <p
+      class="whitespace-pre-wrap leading-7"
+    >
+      {content}
+    </p>
+
+  </div>
+
+</div>
+
+<style>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
