@@ -1,27 +1,19 @@
 import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
-import node from "@astrojs/node";
 
 export default defineConfig({
-  site: "http://localhost:4321",
+  site: "https://your-project.vercel.app",
 
   output: "server",
 
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
 
   integrations: [sitemap()],
 
   vite: {
     plugins: [tailwindcss()],
-  },
-
-  image: {
-    service: {
-      entrypoint: "astro/assets/services/sharp",
-    },
   },
 
   compressHTML: true,
